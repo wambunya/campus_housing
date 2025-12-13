@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<div id="map" style="height: 500px;"></div>
+
+<script>
+    var map = L.map('map').setView([40.7128, -74.0060], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // Loop through Django listings data passed as JSON
+    var listings = {{ listings_json|safe }}; // You need to serialize listings in views.py
+    
+    listings.forEach(function(item) {
+        L.marker([item.lat, item.lng]).addTo(map)
+            .bindPopup(`<b>${item.title}</b><br>$${item.price}`);
+    });
+</script>

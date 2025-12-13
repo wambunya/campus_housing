@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Find Your Perfect Student Home</h1>
+        <p class="text-xl mb-8 text-blue-100">Discover housing near your campus with ease</p>
+        
+        <form action="{% url 'search' %}" method="GET" class="max-w-4xl mx-auto bg-white rounded-lg shadow-xl p-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+            <select name="campus" class="px-4 py-3 border border-gray-300 rounded-lg text-gray-900">
+                <option value="All Campuses">All Campuses</option>
+                <option value="Tech University">Tech University</option>
+                <option value="State University">State University</option>
+            </select>
+            <input type="number" name="max_price" placeholder="Max Price" class="px-4 py-3 border border-gray-300 rounded-lg text-gray-900">
+            <input type="number" name="bedrooms" placeholder="Min Bed" class="px-4 py-3 border border-gray-300 rounded-lg text-gray-900">
+            <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium flex items-center justify-center">
+                Search
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-gray-900 mb-8">Featured Listings</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for listing in featured %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+                <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-gray-900">{{ listing.title }}</h3>
+                    <p class="text-gray-600 text-sm mb-3">{{ listing.distance_from_campus }}mi from {{ listing.campus }}</p>
+                    <div class="flex justify-between items-center mt-4">
+                        <span class="text-2xl font-bold text-blue-600">${{ listing.price }}</span>
+                        <a href="{% url 'detail' listing.id %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">View</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
