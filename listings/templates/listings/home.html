@@ -1,42 +1,275 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div
+  class="relative min-h-[650px] flex items-center justify-center text-center px-4 overflow-hidden"
+>
+  <div
+    class="absolute inset-0 bg-cover bg-center z-0"
+    style="
+      background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070');
+    "
+  ></div>
 
-{% block content %}
-<div class="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Find Your Perfect Student Home</h1>
-        <p class="text-xl mb-8 text-blue-100">Discover housing near your campus with ease</p>
-        
-        <form action="{% url 'search' %}" method="GET" class="max-w-4xl mx-auto bg-white rounded-lg shadow-xl p-4 grid grid-cols-1 md:grid-cols-4 gap-4">
-            <select name="campus" class="px-4 py-3 border border-gray-300 rounded-lg text-gray-900">
-                <option value="All Campuses">All Campuses</option>
-                <option value="Tech University">Tech University</option>
-                <option value="State University">State University</option>
-            </select>
-            <input type="number" name="max_price" placeholder="Max Price" class="px-4 py-3 border border-gray-300 rounded-lg text-gray-900">
-            <input type="number" name="bedrooms" placeholder="Min Bed" class="px-4 py-3 border border-gray-300 rounded-lg text-gray-900">
-            <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium flex items-center justify-center">
-                Search
-            </button>
-        </form>
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-[#0b1623]/90 via-[#0b1623]/80 to-[#0b1623]/95 z-10"
+  ></div>
+
+  <div class="relative z-20 max-w-5xl mx-auto mt-10">
+    <span
+      class="inline-block py-1 px-3 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider mb-6"
+    >
+      Trusted by 50+ Universities
+    </span>
+    <h1
+      class="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tight leading-tight"
+    >
+      Housing that feels <br />
+      like
+      <span
+        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200"
+        >home.</span
+      >
+    </h1>
+    <p
+      class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto font-light leading-relaxed"
+    >
+      Skip the scams. We connect students directly with verified landlords near
+      Tech & State University campuses.
+    </p>
+
+    <div
+      class="bg-white/5 backdrop-blur-md p-2 rounded-xl border border-white/10 max-w-4xl mx-auto shadow-2xl"
+    >
+      <form
+        action="{% url 'search' %}"
+        method="GET"
+        class="flex flex-col md:flex-row gap-2"
+      >
+        <div
+          class="flex-grow bg-white rounded-lg flex items-center px-4 py-3 md:py-4"
+        >
+          <i data-lucide="map-pin" class="text-slate-400 w-5 h-5 mr-3"></i>
+          <select
+            name="campus"
+            class="w-full bg-transparent outline-none text-slate-700 font-medium"
+          >
+            <option value="All Campuses">Where do you study?</option>
+            <option value="Tech University">Tech University</option>
+            <option value="State University">State University</option>
+          </select>
+        </div>
+
+        <div
+          class="flex-grow bg-white rounded-lg flex items-center px-4 py-3 md:py-4 border-t md:border-t-0 md:border-l border-slate-100"
+        >
+          <i data-lucide="home" class="text-slate-400 w-5 h-5 mr-3"></i>
+          <select
+            name="property_type"
+            class="w-full bg-transparent outline-none text-slate-700 font-medium"
+          >
+            <option value="">Property Type</option>
+            <option value="apartment">Apartment</option>
+            <option value="shared">Shared Room</option>
+          </select>
+        </div>
+
+        <button
+          class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 md:py-4 rounded-lg font-bold transition shadow-lg shadow-blue-600/20 whitespace-nowrap"
+        >
+          Search Now
+        </button>
+      </form>
     </div>
+  </div>
 </div>
 
-<div class="max-w-7xl mx-auto px-4 py-16">
-    <h2 class="text-3xl font-bold text-gray-900 mb-8">Featured Listings</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for listing in featured %}
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-                <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold text-gray-900">{{ listing.title }}</h3>
-                    <p class="text-gray-600 text-sm mb-3">{{ listing.distance_from_campus }}mi from {{ listing.campus }}</p>
-                    <div class="flex justify-between items-center mt-4">
-                        <span class="text-2xl font-bold text-blue-600">${{ listing.price }}</span>
-                        <a href="{% url 'detail' listing.id %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">View</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+<section class="py-24 bg-[#f8fafc]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold text-[#0b1623] mb-4">
+        Everything you need
+      </h2>
+      <p class="text-slate-500 max-w-2xl mx-auto">
+        We've digitized the entire rental process to make it safer and faster.
+      </p>
     </div>
-</div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div
+        class="bg-white p-8 rounded-2xl shadow-real border border-slate-100 hover:-translate-y-1 transition duration-300"
+      >
+        <div
+          class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 text-blue-600"
+        >
+          <i data-lucide="shield-check" class="w-7 h-7"></i>
+        </div>
+        <h3 class="font-bold text-xl text-[#0b1623] mb-3">
+          Verified Landlords
+        </h3>
+        <p class="text-slate-500 leading-relaxed mb-6 text-sm">
+          Every property owner is vetted manually. No more fake listings or
+          surprise fees.
+        </p>
+        <a
+          href="#"
+          class="text-blue-600 font-bold text-sm flex items-center hover:gap-2 transition-all"
+        >
+          Learn more <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+        </a>
+      </div>
+
+      <div
+        class="bg-white p-8 rounded-2xl shadow-real border border-slate-100 hover:-translate-y-1 transition duration-300"
+      >
+        <div
+          class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 text-blue-600"
+        >
+          <i data-lucide="credit-card" class="w-7 h-7"></i>
+        </div>
+        <h3 class="font-bold text-xl text-[#0b1623] mb-3">Secure Payments</h3>
+        <p class="text-slate-500 leading-relaxed mb-6 text-sm">
+          Pay deposits and monthly rent directly through our platform using
+          Stripe.
+        </p>
+        <a
+          href="#"
+          class="text-blue-600 font-bold text-sm flex items-center hover:gap-2 transition-all"
+        >
+          View payment protection
+          <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+        </a>
+      </div>
+
+      <div
+        class="bg-white p-8 rounded-2xl shadow-real border border-slate-100 hover:-translate-y-1 transition duration-300"
+      >
+        <div
+          class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 text-blue-600"
+        >
+          <i data-lucide="map" class="w-7 h-7"></i>
+        </div>
+        <h3 class="font-bold text-xl text-[#0b1623] mb-3">Campus Commute</h3>
+        <p class="text-slate-500 leading-relaxed mb-6 text-sm">
+          Filter homes by distance to your specific lecture halls and shuttle
+          stops.
+        </p>
+        <a
+          href="{% url 'search' %}"
+          class="text-blue-600 font-bold text-sm flex items-center hover:gap-2 transition-all"
+        >
+          Try map view <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-[#0b1623] py-20 text-white relative overflow-hidden">
+  <div
+    class="absolute inset-0 opacity-5"
+    style="
+      background-image: radial-gradient(#4b5563 1px, transparent 1px);
+      background-size: 32px 32px;
+    "
+  ></div>
+
+  <div class="max-w-7xl mx-auto px-4 relative z-10">
+    <div
+      class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center divide-x divide-white/10"
+    >
+      <div>
+        <div class="text-4xl md:text-5xl font-bold mb-2 tracking-tight">
+          400+
+        </div>
+        <div class="text-blue-400 text-xs font-bold uppercase tracking-widest">
+          Active Listings
+        </div>
+      </div>
+      <div>
+        <div class="text-4xl md:text-5xl font-bold mb-2 tracking-tight">
+          24h
+        </div>
+        <div class="text-blue-400 text-xs font-bold uppercase tracking-widest">
+          Avg Approval
+        </div>
+      </div>
+      <div>
+        <div class="text-4xl md:text-5xl font-bold mb-2 tracking-tight">0%</div>
+        <div class="text-blue-400 text-xs font-bold uppercase tracking-widest">
+          Booking Fees
+        </div>
+      </div>
+      <div>
+        <div class="text-4xl md:text-5xl font-bold mb-2 tracking-tight">
+          4.9
+        </div>
+        <div class="text-blue-400 text-xs font-bold uppercase tracking-widest">
+          Trust Score
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-24 bg-white">
+  <div
+    class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center"
+  >
+    <div>
+      <span
+        class="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block"
+        >For Landlords</span
+      >
+      <h2 class="text-4xl font-bold text-[#0b1623] mb-6 leading-tight">
+        Fill your vacancies <br />
+        before the semester starts.
+      </h2>
+      <p class="text-slate-600 text-lg leading-relaxed mb-8">
+        Stop relying on Facebook Marketplace. List your property where students
+        actually look. We handle the inquiries, you handle the keys.
+      </p>
+
+      <ul class="space-y-4 mb-10">
+        <li class="flex items-center text-slate-700 font-medium">
+          <i
+            data-lucide="check-circle-2"
+            class="text-blue-600 w-5 h-5 mr-3"
+          ></i>
+          Guaranteed student status verification
+        </li>
+        <li class="flex items-center text-slate-700 font-medium">
+          <i
+            data-lucide="check-circle-2"
+            class="text-blue-600 w-5 h-5 mr-3"
+          ></i>
+          Automated rent reminders
+        </li>
+        <li class="flex items-center text-slate-700 font-medium">
+          <i
+            data-lucide="check-circle-2"
+            class="text-blue-600 w-5 h-5 mr-3"
+          ></i>
+          Direct bank deposits
+        </li>
+      </ul>
+
+      <a
+        href="#"
+        class="inline-block bg-[#0b1623] text-white px-8 py-4 rounded-lg font-bold hover:bg-slate-800 transition shadow-xl shadow-slate-900/10"
+      >
+        List Your Property
+      </a>
+    </div>
+
+    <div class="relative">
+      <div
+        class="absolute -inset-4 bg-blue-50 rounded-2xl -z-10 transform rotate-2"
+      ></div>
+      <img
+        src="https://images.unsplash.com/photo-1560518883-ce09059ee971?q=80&w=1000"
+        alt="Modern apartment"
+        class="rounded-xl shadow-2xl w-full object-cover h-[500px]"
+      />
+    </div>
+  </div>
+</section>
 {% endblock %}

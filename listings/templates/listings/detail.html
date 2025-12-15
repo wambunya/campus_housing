@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="bg-gray-50 min-h-screen py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <a href="{% url 'search' %}" class="inline-flex items-center text-sm text-gray-500 hover:text-blue-600 mb-6 font-medium">
+            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Back to Search
+        </a>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-8">
+                <div class="bg-white rounded-2xl shadow-real overflow-hidden relative h-[400px] group">
+                    {% if listing.image %}
+                        <img src="{{ listing.image.url }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">No Image</div>
+                    {% endif %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 text-white">
+                        <h1 class="text-3xl font-bold mb-2">{{ listing.title }}</h1>
+                        <p class="flex items-center text-sm font-medium opacity-90">
+                            <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> {{ listing.address }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-real p-8 border border-gray-100">
+                    <h3 class="text-xl font-bold text-[#0B1120] mb-4">About this home</h3>
+                    <p class="text-slate-600 leading-relaxed">{{ listing.description }}</p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-real p-8 border border-gray-100">
+                    <h3 class="text-xl font-bold text-[#0B1120] mb-6">Amenities</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {% if listing.has_wifi %}
+                        <div class="flex items-center text-sm text-slate-700 font-medium bg-gray-50 p-3 rounded">
+                            <i data-lucide="wifi" class="w-4 h-4 mr-2 text-blue-600"></i> Wi-Fi
+                        </div>
+                        {% endif %}
+                        {% if listing.has_laundry %}
+                        <div class="flex items-center text-sm text-slate-700 font-medium bg-gray-50 p-3 rounded">
+                            <i data-lucide="shirt" class="w-4 h-4 mr-2 text-blue-600"></i> Laundry
+                        </div>
+                        {% endif %}
+                        {% if listing.has_parking %}
+                        <div class="flex items-center text-sm text-slate-700 font-medium bg-gray-50 p-3 rounded">
+                            <i data-lucide="car" class="w-4 h-4 mr-2 text-blue-600"></i> Parking
+                        </div>
+                        {% endif %}
+                        {% if listing.is_furnished %}
+                        <div class="flex items-center text-sm text-slate-700 font-medium bg-gray-50 p-3 rounded">
+                            <i data-lucide="armchair" class="w-4 h-4 mr-2 text-blue-600"></i> Furnished
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-real border border-gray-100 p-6 sticky top-24">
+                    <div class="flex justify-between items-end mb-6 pb-6 border-b border-gray-100">
+                        <div>
+                            <span class="block text-sm text-gray-500 font-medium mb-1">Monthly Rent</span>
+                            <span class="text-3xl font-bold text-[#0B1120]">KSh {{ listing.price|intcomma }}</span>
+                        </div>
+                        <div class="text-right">
+                             {% if listing.available %}
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Available</span>
+                            {% else %}
+                                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Booked</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-[#0B1120] rounded-full flex items-center justify-center text-white font-bold">
+                            {{ listing.landlord.username|first|upper }}
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-bold text-gray-900">Hosted by {{ listing.landlord.first_name|default:listing.landlord.username }}</p>
+                            <p class="text-xs text-gray-500">Verified Landlord</p>
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                        {% if user.is_student and listing.available %}
+                            <button id="checkout-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold uppercase tracking-wide transition shadow-lg shadow-blue-600/20 mb-3">
+                                Rent Now (Secure)
+                            </button>
+                            <p class="text-xs text-center text-gray-400">You won't be charged yet.</p>
+                        {% elif user.is_landlord %}
+                            <div class="bg-yellow-50 text-yellow-800 p-4 rounded text-sm">
+                                You are viewing this as a landlord.
+                            </div>
+                        {% else %}
+                            <div class="bg-gray-100 text-gray-500 p-4 rounded text-center text-sm font-bold">
+                                Property Unavailable
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="block w-full text-center bg-[#0B1120] hover:bg-slate-800 text-white py-4 rounded-lg font-bold uppercase tracking-wide transition">
+                            Log in to Rent
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+    var stripe = Stripe('{{ stripe_public_key }}');
+    var checkoutButton = document.getElementById('checkout-button');
+
+    if (checkoutButton) {
+        checkoutButton.addEventListener('click', function () {
+            fetch('/create-checkout-session/{{ listing.id }}/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                }
+            })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (session) {
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(function (result) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+        });
+    }
+</script>
+{% endblock %}
