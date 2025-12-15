@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-[#0b1623] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#4b5563 1px, transparent 1px); background-size: 32px 32px;"></div>
+
+    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-2xl relative z-10 border border-slate-100">
+        <div class="text-center">
+            <div class="bg-blue-600 text-white w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4 font-bold text-xl">X</div>
+            <h2 class="text-3xl font-bold text-[#0b1623] tracking-tight">
+                Welcome Back
+            </h2>
+            <p class="mt-2 text-sm text-slate-500">
+                Sign in to manage your property or view listings.
+            </p>
+        </div>
+        
+        <form class="mt-8 space-y-6" method="POST">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i data-lucide="alert-circle" class="h-5 w-5 text-red-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700 font-bold">
+                                Invalid username or password.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div class="mb-4">
+                    <label for="id_username" class="sr-only">Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-lucide="user" class="h-5 w-5 text-gray-400"></i>
+                        </div>
+                        <input id="id_username" name="username" type="text" required class="appearance-none rounded-lg relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Username">
+                    </div>
+                </div>
+                <div>
+                    <label for="id_password" class="sr-only">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-lucide="lock" class="h-5 w-5 text-gray-400"></i>
+                        </div>
+                        <input id="id_password" name="password" type="password" required class="appearance-none rounded-lg relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Password">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+                        Remember me
+                    </label>
+                </div>
+
+                <div class="text-sm">
+                    <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+                        Forgot your password?
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-[#0b1623] hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 uppercase tracking-widest transition shadow-lg shadow-slate-900/20">
+                    Sign in
+                </button>
+            </div>
+        </form>
+        
+        <div class="text-center mt-6">
+            <p class="text-sm text-gray-600">
+                Don't have an account? 
+                <a href="{% url 'register' %}" class="font-bold text-blue-600 hover:text-blue-500">
+                    Register here
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
