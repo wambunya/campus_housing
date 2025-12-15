@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # Utilities
-    'django.contrib.humanize',  # <--- REQUIRED for comma formatting (15,000)
+    'django.contrib.humanize',
 
     # Third Party
     'crispy_forms',
@@ -43,7 +43,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], # Points to root templates folder
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,11 +73,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'Africa/Nairobi' # Updated Timezone
+TIME_ZONE = 'Africa/Nairobi'
 USE_I18N = True
 USE_TZ = True
-
-# Formatting
 USE_THOUSAND_SEPARATOR = True
 
 STATIC_URL = 'static/'
@@ -88,13 +86,17 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Custom Settings
 AUTH_USER_MODEL = 'users.User'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-# Stripe (Replace with your keys)
-STRIPE_PUBLIC_KEY = 'pk_test_...' 
-STRIPE_SECRET_KEY = 'sk_test_...'
+# --- M-PESA DARAJA CONFIGURATION (SANDBOX) ---
+MPESA_ENVIRONMENT = 'sandbox' 
+MPESA_CONSUMER_KEY = 'your_consumer_key_here'     # Replace from developer.safaricom.co.ke
+MPESA_CONSUMER_SECRET = 'your_consumer_secret_here' # Replace from developer.safaricom.co.ke
+MPESA_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919' # Standard Sandbox Passkey
+MPESA_BUSINESS_SHORTCODE = '174379' # Standard Sandbox Paybill
+# NOTE: This URL must be publicly accessible (use ngrok for local dev)
+MPESA_CALLBACK_URL = 'https://your-domain.com/api/mpesa/callback/'

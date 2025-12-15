@@ -24,3 +24,10 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    from django.urls import path
+from . import views
+
+urlpatterns = [
+    # ... existing paths ...
+    path('pay/mpesa/<int:listing_id>/', views.initiate_mpesa_payment, name='mpesa_payment'),
+]

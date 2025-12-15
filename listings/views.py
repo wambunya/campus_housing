@@ -1,90 +1,66 @@
-import stripe
+import requests
+import json
+import base64
+from datetime import datetime
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .models import Listing
-from .forms import ListingForm
+from django.views.decorators.csrf import csrf_exempt
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-def home(request):
-    featured = Listing.objects.filter(available=True).order_by('-created_at')[:3]
-    return render(request, 'listings/home.html', {'featured': featured})
-
-def search_listings(request):
-    queryset = Listing.objects.all()
+# Helper to get Access Token
+def get_mpesa_access_token():
+    consumer_key = settings.MPESA_CONSUMER_KEY
+    consumer_secret = settings.MPESA_CONSUMER_SECRET
+    api_URL = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
     
-    campus = request.GET.get('campus')
-    max_price = request.GET.get('max_price')
-    bedrooms = request.GET.get('bedrooms')
-    property_type = request.GET.get('property_type')
-    
-    if campus and campus != "All Campuses":
-        queryset = queryset.filter(campus=campus)
-    if max_price:
-        queryset = queryset.filter(price__lte=max_price)
-    if bedrooms:
-        queryset = queryset.filter(bedrooms__gte=bedrooms)
-    if property_type:
-        queryset = queryset.filter(property_type=property_type)
-        
-    context = {
-        'listings': queryset,
-        'values': request.GET
-    }
-    return render(request, 'listings/search.html', context)
-
-def listing_detail(request, pk):
-    listing = get_object_or_404(Listing, pk=pk)
-    return render(request, 'listings/detail.html', {
-        'listing': listing, 
-        'stripe_public_key': settings.STRIPE_PUBLIC_KEY
-    })
+    r = requests.get(api_URL, auth=(consumer_key, consumer_secret))
+    json_response = r.json()
+    return json_response['access_token']
 
 @login_required
-def create_listing(request):
-    if not request.user.is_landlord:
-        return redirect('home')
-        
-    if request.method == 'POST':
-        form = ListingForm(request.POST, request.FILES)
-        if form.is_valid():
-            listing = form.save(commit=False)
-            listing.landlord = request.user
-            listing.save()
-            return redirect('dashboard')
-    else:
-        form = ListingForm()
-    return render(request, 'listings/create.html', {'form': form})
+def initiate_mpesa_payment(request, listing_id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid method'}, status=400)
 
-@login_required
-def landlord_dashboard(request):
-    if not request.user.is_landlord:
-        return redirect('home')
-    user_listings = Listing.objects.filter(landlord=request.user)
-    return render(request, 'listings/dashboard.html', {'listings': user_listings})
-
-@login_required
-def create_checkout_session(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
+    phone_number = request.user.phone_number # Ensure user model has this field
+    
+    # Format phone number (Must be 2547XXXXXXXX)
+    if phone_number.startswith('0'):
+        phone_number = '254' + phone_number[1:]
+    
+    amount = int(listing.price)
+    access_token = get_mpesa_access_token()
+    api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+    
+    # Generate Password
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    passkey = settings.MPESA_PASSKEY
+    shortcode = settings.MPESA_BUSINESS_SHORTCODE
+    password_str = shortcode + passkey + timestamp
+    password = base64.b64encode(password_str.encode()).decode('utf-8')
+
+    payload = {
+        "BusinessShortCode": shortcode,
+        "Password": password,
+        "Timestamp": timestamp,
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": amount,
+        "PartyA": phone_number,
+        "PartyB": shortcode,
+        "PhoneNumber": phone_number,
+        "CallBackURL": settings.MPESA_CALLBACK_URL,
+        "AccountReference": f"Rent-{listing.id}",
+        "TransactionDesc": f"Rent payment for {listing.title}"
+    }
+
+    headers = {
+        'Authorization': 'Bearer ' + access_token,
+        'Content-Type': 'application/json'
+    }
+
     try:
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[{
-                'price_data': {
-                    'currency': 'kes',  # <--- UPDATED TO KES
-                    'unit_amount': int(listing.price * 100), 
-                    'product_data': {
-                        'name': f"Rent for {listing.title}",
-                    },
-                },
-                'quantity': 1,
-            }],
-            mode='payment',
-            success_url=request.build_absolute_uri('/success/'),
-            cancel_url=request.build_absolute_uri(f'/listing/{listing_id}/'),
-        )
-        return JsonResponse({'id': checkout_session.id})
+        response = requests.post(api_url, json=payload, headers=headers)
+        data = response.json()
+        return JsonResponse(data)
     except Exception as e:
         return JsonResponse({'error': str(e)})
