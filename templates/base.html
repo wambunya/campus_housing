@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CampusHomes | Premium Student Housing</title>
+    <title>CampusHomes | Premium Housing</title>
 
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -15,113 +15,132 @@
 
     <style>
       :root {
-        /* The "Real" Palette */
-        --brand-dark: #0b1623; /* Deep Oxford Navy */
-        --brand-primary: #1e293b; /* Lighter Slate Navy for headers */
-        --brand-accent: #3b82f6; /* Bright Royal Blue */
-        --brand-gold: #c4b5fd; /* Subtle accent (soft violet-gold tone) */
-        --text-off-white: #f1f5f9; /* Softer than pure white */
+        /* BRIKLY PALETTE */
+        --brand-yellow: #ffb600; /* The signature construction yellow */
+        --brand-dark: #1f2937; /* Dark Charcoal */
+        --brand-black: #111827; /* Almost Black */
+        --brand-gray: #f3f4f6; /* Light Gray background */
       }
 
       body {
-        font-family: "Plus Jakarta Sans", sans-serif;
-        background-color: #f8fafc; /* Very light gray, not pure white */
+        font-family: "Barlow", sans-serif;
+        background-color: white;
       }
 
-      /* Realistic Shadow: Softer and more diffuse */
-      .shadow-real {
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
-          0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      /* Boxy, sharp shadows */
+      .shadow-sharp {
+        box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-primary {
+        background-color: var(--brand-yellow);
+        color: black;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background-color: black;
+        color: white;
       }
     </style>
   </head>
-  <body class="flex flex-col min-h-screen text-slate-800">
+  <body class="flex flex-col min-h-screen text-gray-800">
     <div
-      class="bg-[#08101a] text-slate-400 text-xs py-2.5 px-4 border-b border-white/5 hidden md:block"
+      class="bg-[#FFB600] text-black text-xs font-bold py-3 px-4 hidden md:block"
     >
-      <div class="max-w-7xl mx-auto flex justify-between items-center px-4">
-        <div class="flex space-x-4">
-          <span class="hover:text-white cursor-pointer transition"
-            ><i data-lucide="twitter" class="w-3 h-3 inline mr-1"></i
-          ></span>
-          <span class="hover:text-white cursor-pointer transition"
-            ><i data-lucide="linkedin" class="w-3 h-3 inline mr-1"></i
-          ></span>
-        </div>
-        <div class="flex space-x-8 font-medium">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex space-x-6 uppercase tracking-widest">
           <span
-            ><i
-              data-lucide="phone"
-              class="w-3 h-3 inline mr-1 text-blue-500"
-            ></i>
-            +1 (818) 23 45 678</span
+            ><i data-lucide="map-pin" class="w-3 h-3 inline mr-1"></i> Nairobi,
+            Kenya</span
           >
-          <span class="hover:text-blue-400 cursor-pointer transition"
-            ><i data-lucide="help-circle" class="w-3 h-3 inline mr-1"></i>
-            Support Center</span
+          <span
+            ><i data-lucide="mail" class="w-3 h-3 inline mr-1"></i>
+            info@campushomes.co.ke</span
           >
+        </div>
+        <div class="flex space-x-4">
+          <a href="#" class="hover:text-white transition"
+            ><i data-lucide="facebook" class="w-4 h-4"></i
+          ></a>
+          <a href="#" class="hover:text-white transition"
+            ><i data-lucide="twitter" class="w-4 h-4"></i
+          ></a>
+          <a href="#" class="hover:text-white transition"
+            ><i data-lucide="linkedin" class="w-4 h-4"></i
+          ></a>
         </div>
       </div>
     </div>
 
     <header
-      class="bg-[#0b1623]/95 backdrop-blur-md text-white sticky top-0 z-50 border-b border-white/5"
+      class="bg-[#111827] text-white sticky top-0 z-50 border-b-4 border-[#FFB600]"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
-          <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+        <div class="flex justify-between items-center h-24">
+          <a href="{% url 'home' %}" class="flex items-center gap-2 group">
             <div
-              class="bg-blue-600 text-white p-1.5 rounded-sm font-bold text-xl tracking-tighter group-hover:bg-blue-500 transition"
+              class="bg-white text-black p-2 font-black text-2xl tracking-tighter uppercase transform -skew-x-12"
             >
-              XTRA
+              CH
             </div>
             <div class="flex flex-col">
-              <span class="text-lg font-bold tracking-wide leading-none"
-                >CAMPUS</span
+              <span
+                class="text-2xl font-black tracking-wide leading-none uppercase text-white"
+                >Campus</span
               >
               <span
-                class="text-[10px] text-blue-400 font-bold tracking-[0.2em] uppercase leading-none"
-                >Housing</span
+                class="text-xs text-[#FFB600] font-bold tracking-[0.3em] uppercase leading-none"
+                >Homes</span
               >
             </div>
           </a>
 
           <nav
-            class="hidden md:flex space-x-10 text-sm font-medium text-slate-300"
+            class="hidden md:flex space-x-8 text-sm font-bold uppercase tracking-wider"
           >
-            <a href="{% url 'home' %}" class="hover:text-white transition"
+            <a
+              href="{% url 'home' %}"
+              class="text-white hover:text-[#FFB600] transition"
               >Home</a
             >
-            <a href="{% url 'search' %}" class="hover:text-white transition"
+            <a
+              href="{% url 'search' %}"
+              class="text-white hover:text-[#FFB600] transition"
               >Properties</a
             >
-            <a href="#" class="hover:text-white transition">Landlords</a>
-            <a href="#" class="hover:text-white transition">Community</a>
+            <a href="#" class="text-white hover:text-[#FFB600] transition"
+              >About</a
+            >
+            <a href="#" class="text-white hover:text-[#FFB600] transition"
+              >Contact</a
+            >
           </nav>
 
-          <div class="flex items-center space-x-5">
-            <a href="#" class="hidden md:block text-slate-300 hover:text-white"
-              ><i data-lucide="search" class="w-5 h-5"></i
-            ></a>
-
+          <div class="flex items-center gap-4">
             {% if user.is_authenticated %}
-            <span class="text-sm text-slate-300"
-              >Hi, {{ user.first_name|default:user.username }}</span
-            >
+            <div class="hidden md:flex flex-col text-right mr-2">
+              <span class="text-xs text-gray-400 uppercase">Welcome</span>
+              <span class="text-sm font-bold text-[#FFB600]"
+                >{{ user.username }}</span
+              >
+            </div>
             <a
               href="{% url 'logout' %}"
-              class="text-xs text-red-400 hover:text-red-300 border border-white/10 px-3 py-1.5 rounded"
+              class="text-white hover:text-[#FFB600] font-bold uppercase text-xs border border-gray-600 px-4 py-2 hover:border-[#FFB600] transition"
               >Logout</a
             >
             {% else %}
             <a
               href="{% url 'login' %}"
-              class="text-sm font-bold text-white hover:text-blue-400 transition mr-2"
+              class="text-white hover:text-[#FFB600] font-bold uppercase text-sm mr-2"
               >Log In</a
             >
             <a
               href="{% url 'register' %}"
-              class="hidden md:inline-flex bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded text-sm font-semibold shadow-lg shadow-blue-900/20 transition-all transform hover:-translate-y-0.5"
+              class="btn-primary px-6 py-3 text-xs shadow-none hover:shadow-lg"
             >
               Get Started
             </a>
@@ -131,59 +150,63 @@
       </div>
     </header>
 
-    <main class="flex-grow">{% block content %}{% endblock %}</main>
+    <main class="flex-grow">
+      {% if messages %} {% for message in messages %}
+      <div
+        class="bg-[#FFB600] text-black font-bold text-center py-3 uppercase text-sm tracking-wide"
+      >
+        {{ message }}
+      </div>
+      {% endfor %} {% endif %} {% block content %}{% endblock %}
+    </main>
 
-    <footer class="bg-[#050b14] text-slate-400 py-20 border-t border-white/5">
+    <footer class="bg-[#111827] text-gray-400 py-16 border-t border-gray-800">
       <div
         class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12"
       >
         <div class="space-y-6">
           <div class="flex items-center gap-2 text-white">
             <div
-              class="bg-white text-[#050b14] px-2 py-0.5 rounded font-bold text-lg"
+              class="bg-[#FFB600] text-black px-2 py-1 font-black text-xl uppercase -skew-x-12"
             >
-              XTRA
+              CH
             </div>
-            <span class="font-bold tracking-wide">HOMES</span>
+            <span class="font-bold tracking-wide uppercase text-xl"
+              >CampusHomes</span
+            >
           </div>
-          <p class="text-sm leading-relaxed text-slate-500">
-            Trusted by 40,000+ students. We verify every landlord so you can
-            rent with confidence.
+          <p class="text-sm leading-relaxed">
+            We build trust. Verified listings, secure payments, and premium
+            housing for university students.
           </p>
-          <div class="flex gap-4">
-            <a
-              href="#"
-              class="bg-white/5 p-2 rounded-full hover:bg-blue-600 hover:text-white transition"
-              ><i data-lucide="instagram" class="w-4 h-4"></i
-            ></a>
-            <a
-              href="#"
-              class="bg-white/5 p-2 rounded-full hover:bg-blue-600 hover:text-white transition"
-              ><i data-lucide="twitter" class="w-4 h-4"></i
-            ></a>
-          </div>
         </div>
 
         <div>
           <h4
-            class="text-white font-bold mb-6 text-sm uppercase tracking-wider"
+            class="text-white font-black mb-6 text-sm uppercase tracking-widest border-l-4 border-[#FFB600] pl-3"
           >
-            Marketplace
+            Services
           </h4>
-          <ul class="space-y-4 text-sm">
+          <ul class="space-y-3 text-sm font-medium">
             <li>
-              <a href="#" class="hover:text-blue-400 transition"
-                >Browse Apartments</a
+              <a
+                href="#"
+                class="hover:text-[#FFB600] transition block py-1 border-b border-gray-800"
+                >Find Housing</a
               >
             </li>
             <li>
-              <a href="#" class="hover:text-blue-400 transition"
-                >Shared Rooms</a
+              <a
+                href="#"
+                class="hover:text-[#FFB600] transition block py-1 border-b border-gray-800"
+                >Landlord Portal</a
               >
             </li>
             <li>
-              <a href="#" class="hover:text-blue-400 transition"
-                >Safety Standards</a
+              <a
+                href="#"
+                class="hover:text-[#FFB600] transition block py-1 border-b border-gray-800"
+                >Maintenance</a
               >
             </li>
           </ul>
@@ -191,20 +214,30 @@
 
         <div>
           <h4
-            class="text-white font-bold mb-6 text-sm uppercase tracking-wider"
+            class="text-white font-black mb-6 text-sm uppercase tracking-widest border-l-4 border-[#FFB600] pl-3"
           >
             Company
           </h4>
-          <ul class="space-y-4 text-sm">
+          <ul class="space-y-3 text-sm font-medium">
             <li>
-              <a href="#" class="hover:text-blue-400 transition">About Xtra</a>
+              <a
+                href="#"
+                class="hover:text-[#FFB600] transition block py-1 border-b border-gray-800"
+                >Our Story</a
+              >
             </li>
             <li>
-              <a href="#" class="hover:text-blue-400 transition">Careers</a>
+              <a
+                href="#"
+                class="hover:text-[#FFB600] transition block py-1 border-b border-gray-800"
+                >Careers</a
+              >
             </li>
             <li>
-              <a href="#" class="hover:text-blue-400 transition"
-                >Press & News</a
+              <a
+                href="#"
+                class="hover:text-[#FFB600] transition block py-1 border-b border-gray-800"
+                >Contact</a
               >
             </li>
           </ul>
@@ -212,28 +245,28 @@
 
         <div>
           <h4
-            class="text-white font-bold mb-6 text-sm uppercase tracking-wider"
+            class="text-white font-black mb-6 text-sm uppercase tracking-widest border-l-4 border-[#FFB600] pl-3"
           >
-            Stay Updated
+            Contact Us
           </h4>
-          <form class="space-y-2">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              class="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-blue-500 transition text-white"
-            />
-            <button
-              class="w-full bg-blue-600 text-white font-bold text-sm py-3 rounded hover:bg-blue-500 transition"
-            >
-              Subscribe
-            </button>
-          </form>
+          <p class="text-sm mb-2">
+            <span class="text-[#FFB600] font-bold">P:</span> +254 700 000 000
+          </p>
+          <p class="text-sm mb-4">
+            <span class="text-[#FFB600] font-bold">E:</span>
+            help@campushomes.co.ke
+          </p>
+          <button
+            class="bg-white text-black font-bold uppercase text-xs px-6 py-3 hover:bg-[#FFB600] transition w-full"
+          >
+            Request Call Back
+          </button>
         </div>
       </div>
       <div
-        class="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-white/5 text-xs text-center text-slate-600"
+        class="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-gray-800 text-xs text-center font-medium uppercase tracking-widest"
       >
-        &copy; 2025 Xtra Corporation. All rights reserved.
+        &copy; 2025 CampusHomes Ltd. All rights reserved.
       </div>
     </footer>
 
